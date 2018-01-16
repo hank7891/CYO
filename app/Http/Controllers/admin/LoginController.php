@@ -23,7 +23,7 @@ class LoginController extends Controller
         $url = route('admin.index');
         $input = Input::only('accountID', 'accountPassword');
 
-        $user = Model\system_account::where('account_id', $input['accountID'])->first();
+        $user = Model\system_account::where('account', $input['accountID'])->first();
         if (!$user) {
             return redirect()->back()
                     ->withErrors([
@@ -31,7 +31,7 @@ class LoginController extends Controller
                     ]);
         }
 
-        if (Hash::check($input['accountPassword'], $user->account_password)) {
+        if (Hash::check($input['accountPassword'], $user->password)) {
             $request->session()->put('has_login', True);
             $request->session()->put('user', $user);
         } else {
